@@ -18,8 +18,30 @@ const App = () => {
     const response = await pinata.upload.file(selectedFile);
     const ipfsHash = response.IpfsHash;
     setipfsHash(ipfsHash);
-    
+    await storeHashOnBlockchain(ipfsHash);
+      
   }
+
+  const storeHashOnBlockchain = async (hash) => {
+    const provider = new ethers.providers.web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    
+    const contract = new ethers.contract(contractAddress, contractAbi, signer);
+
+    const tx = await contract.setIPFSHash(hash);
+    await tx.wait();
+  }
+
+  const retriveHashFromBlockchain = async (hash) => {
+    const provider = new ethers.providers.web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.contract(contractAddress, contractAbi, signer);
+    const storedHash = await contract.getIPFSHash();
+    setstoredHash(storedHash);
+
+  }
+
   
   
 
@@ -61,6 +83,21 @@ const App = () => {
         <button className='submit-button' onClick={handleSubmission}>Submit</button>
 
       </div>
+
+      {ipfsHash && (
+        <div className='result-section'>
+          <p>IPFS Hash :{ipfsHash}</p>
+        </div>
+
+      )}
+
+      <div className='button'>
+        <button onClick={retriveHashFromBlockchain}>Retrive stored hash </button>
+      </div>
+
+      {storedHash && (
+        <p>Stored IPFS Hash:{storedHash }</p>
+      )}
 
     </div>
 
