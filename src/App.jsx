@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { pinata } from '../config'
-import {ethers} from "ethers"
+import { ethers } from "ethers"
 
 import './App.css'
 
 const App = () => {
 
-  const contractAddress ="0xd9145CCE52D386f254917e481eB44e9943F39138",
+  const [selectedFile, setselectedFile] = useState(null);
+  const [ipfsHash, setipfsHash] = useState("");
+  const [storedHash, setstoredHash] = useState("");
+
+  const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138",
   const contractAbi = [
     {
       "inputs": [
@@ -35,7 +39,7 @@ const App = () => {
       "type": "function"
     }
   ]
-  
+
   return (
     
   )
