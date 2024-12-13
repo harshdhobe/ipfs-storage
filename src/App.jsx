@@ -13,6 +13,13 @@ const App = () => {
   const changeHandler = (event) => {
     setselectedFile(event.target.files[0]);
   }
+
+  const handleSubmission = async () => {
+    const response = await pinata.upload.file(selectedFile);
+    const ipfsHash = response.IpfsHash;
+    setipfsHash(ipfsHash);
+    
+  }
   
   
 
